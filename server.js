@@ -17,7 +17,13 @@ const port = process.env.PORT;
 // Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+const corsOptions = {
+  proxy: "http://localhost:3000",
+  credentials: true,
+  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 // importing DB
 const db = require("./db/models/index");
