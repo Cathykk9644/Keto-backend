@@ -50,8 +50,6 @@ module.exports = (sequelize, DataTypes) => {
 
       profile_picture: {
         type: DataTypes.STRING(2048),
-        defaultValue:
-          "https://images.unsplash.com/photo-1579047917338-a6a69144fe63?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGhhcHB5JTIwcGVyc29ufGVufDB8fDB8fHww",
       },
 
       email_verified: {

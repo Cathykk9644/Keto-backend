@@ -11,9 +11,9 @@ class AuthController extends BaseController {
 
   // ============= NEW USER SIGNUP =============== //
   signup = async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, profile_picture } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !profile_picture) {
       return res.status(400).json({
         error: true,
         msg: "Error: Please fill in all required fields and try again.",
@@ -42,6 +42,7 @@ class AuthController extends BaseController {
         lastName,
         email,
         password: hashedPassword,
+        profile_picture,
       });
 
       // Step 4: Generate tokens
