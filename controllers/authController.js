@@ -84,7 +84,17 @@ class AuthController extends BaseController {
 
       const jwtToken = jwtGenerator(user.id);
 
-      res.json({ jwtToken });
+      // Respond with JWT Token and user info
+      res.json({
+        jwtToken,
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          profile_picture: user.profile_picture,
+        },
+      });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
