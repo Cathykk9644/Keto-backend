@@ -145,6 +145,23 @@ class MealController extends BaseController {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: lineItems,
+        shipping_address_collection: { allowed_countries: ["HK"] },
+        shipping_options: [
+          {
+            shipping_rate_data: {
+              type: "fixed_amount",
+              fixed_amount: { amount: 0, currency: "usd" },
+              display_name: "Free shipping",
+              delivery_estimate: {
+                minimum: { unit: "hour", value: 1 },
+                maximum: { unit: "hour", value: 2 },
+              },
+            },
+          },
+        ],
+        phone_number_collection: {
+          enabled: true,
+        },
         mode: "payment",
         success_url: `${process.env.CLIENT_PORT}/paymentsuccess`,
         cancel_url: `${process.env.CLIENT_PORT}/`,
