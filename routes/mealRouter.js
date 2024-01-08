@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 class MealsRouter {
   constructor(controller) {
     this.controller = controller;
@@ -10,7 +9,11 @@ class MealsRouter {
     router.get("/:mealId", this.controller.getMealById.bind(this.controller));
 
     // POST route to create a new meal
-    router.post("/", this.controller.createMeal.bind(this.controller));
+    router.post(
+      "/",
+
+      this.controller.createMeal.bind(this.controller)
+    );
 
     // PUT route to update an existing meal by ID
     router.put("/:mealId", this.controller.updateMeal.bind(this.controller));
