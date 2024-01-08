@@ -1,5 +1,8 @@
 const BaseController = require("./baseController");
 
+require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 class MealController extends BaseController {
   constructor(model, mealModel) {
     super(model);
@@ -117,6 +120,41 @@ class MealController extends BaseController {
       return res.status(400).json({
         error: true,
         msg: `Error: unable to delete meal with ID ${mealId}.`,
+      });
+    }
+  };
+
+  createCheckoutSession = async (req, res) => {
+    try {
+      // Assuming `req.body` contains `items` which is an array of meal objects
+
+      const lineItems = req.body.items.map((item) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+              images: [item.image],
+            },
+            unit_amount: Math.round(parseFloat(item.price) * 100),
+          },
+          quantity: item.quantity,
+        };
+      });
+
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: lineItems,
+        mode: "payment",
+        success_url: `${process.env.CLIENT_PORT}/paymentsuccess`,
+        cancel_url: `${process.env.CLIENT_PORT}/`,
+      });
+
+      res.status(200).json({ sessionId: session.id });
+    } catch (error) {
+      res.status(400).json({
+        error: true,
+        msg: `Error creating checkout session: ${error.message}`,
       });
     }
   };

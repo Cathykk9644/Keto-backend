@@ -21,6 +21,11 @@ class MealsRouter {
     // DELETE route to delete an existing meal by ID
     router.delete("/:mealId", this.controller.updateMeal.bind(this.controller));
 
+    router.post(
+      "/create-checkout-session",
+      this.controller.createCheckoutSession.bind(this.controller)
+    );
+
     return router;
   }
 }

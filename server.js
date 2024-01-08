@@ -18,7 +18,7 @@ const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const corsOptions = {
-  proxy: "http://localhost:3000",
+  origin: "http://localhost:3000",
   credentials: true,
   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
   optionSuccessStatus: 200,
