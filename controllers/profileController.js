@@ -32,21 +32,41 @@ class ProfileController extends BaseController {
 
   updateUserProfile = async (req, res) => {
     const { userId } = req.params;
-
     const { firstName, lastName, profile_picture } = req.body;
 
     try {
-      const updatedUserProfile = await this.model.update(
+      // Perform the update
+      const [updateCount] = await this.model.update(
         {
-          firstName: firstName,
-          lastName: lastName,
-          profile_picture: profile_picture,
+          firstName,
+          lastName,
+          profile_picture,
         },
         { where: { id: userId } }
       );
-      return res.status(200).json(updatedUserProfile);
+
+      // Check if the update was successful
+      if (updateCount === 0) {
+        return res.status(404).json({
+          error: true,
+          msg: "User not found or no data changed.",
+        });
+      }
+
+      // Fetch and return the updated user profile
+      const updatedUserProfile = await this.model.findOne({
+        where: { id: userId },
+      });
+      if (updatedUserProfile) {
+        return res.status(200).json(updatedUserProfile); // Returning the updated user data
+      } else {
+        return res.status(404).json({
+          error: true,
+          msg: "Updated user not found.",
+        });
+      }
     } catch (error) {
-      return res.status(400).json({
+      return res.status(500).json({
         error: true,
         msg: "Error: We encountered an error while handling your request. Please try again.",
       });
